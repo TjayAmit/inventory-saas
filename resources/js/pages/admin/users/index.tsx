@@ -16,10 +16,6 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
-    title: 'Admin',
-    href: '/admin',
-  },
-  {
     title: 'Users',
     href: '/admin/users',
   },
