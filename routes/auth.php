@@ -36,8 +36,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AdminLoginController::class, 'login']);
+    Route::get('/login', [AdminLoginController::class, 'form'])->name('admin.login');
+    Route::post('/login.post', [AdminLoginController::class, 'login'])->name('admin.login.post');
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 });
 
