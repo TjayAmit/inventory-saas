@@ -10,6 +10,8 @@ class Admin extends Authenticatable
 {
     use HasFactory, HasRoles;
 
+    protected $guard_name = 'admin';
+    
     protected $fillable = [
         'name',
         'email',
@@ -31,4 +33,17 @@ class Admin extends Authenticatable
         'is_active' => 'boolean',
         'last_login_at' => 'datetime'
     ];
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Eager load roles and permissions to avoid N+1 queries
+        static::addGlobalScope('withRolesAndPermissions', function ($query) {
+            $query->with(['roles', 'permissions']);
+        });
+    }
 }
