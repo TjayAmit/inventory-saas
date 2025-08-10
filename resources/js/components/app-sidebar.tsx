@@ -13,19 +13,19 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        role: 'all',
+        role: 'Tenant Admin',
     },
     {
         title: 'Dashboard',
         href: '/admin/dashboard',
         icon: LayoutGrid,
-        role: 'admin',
+        role: 'Super Admin',
     },
     {
         title: 'Users', 
         href: '/admin/users',
         icon: User, 
-        role: 'admin',
+        role: 'Super Admin',
     },
 ];
 
@@ -34,20 +34,16 @@ const footerNavItems: NavItem[] = [
         title: 'Repository',
         href: 'https://github.com/laravel/react-starter-kit',
         icon: Folder,
-        role: 'all',
     },
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits#react',
         icon: BookOpen,
-        role: 'all',
     },
 ];
 
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
-    
-    console.log(auth.user);
     
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -64,7 +60,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems.filter(item => auth.user?.roles?.includes(item.role!))} />
             </SidebarContent>
 
             <SidebarFooter>

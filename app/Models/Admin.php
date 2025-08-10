@@ -11,7 +11,7 @@ class Admin extends Authenticatable
     use HasFactory, HasRoles;
 
     protected $guard_name = 'admin';
-    
+
     protected $fillable = [
         'name',
         'email',
@@ -34,16 +34,31 @@ class Admin extends Authenticatable
         'last_login_at' => 'datetime'
     ];
 
-    /**
-     * Boot the model.
-     */
-    protected static function boot()
+    public function getRoleNamesAttribute(): array
     {
-        parent::boot();
-
-        // Eager load roles and permissions to avoid N+1 queries
-        static::addGlobalScope('withRolesAndPermissions', function ($query) {
-            $query->with(['roles', 'permissions']);
-        });
+        return $this->getRoleNames()->toArray(); // Ensure array conversion
+    }
+    
+    public function getAllPermissionsAttribute(): array
+    {
+        return $this->getAllPermissions()
+            ->pluck('name')
+            ->toArray(); // Ensure array conversion
+    }
+    
+    public function toArray()
+    {
+        $array = parent::toArray();
+        
+        // Only include these if they're not already in hidden attributes
+        if (!in_array('roles', $this->hidden)) {
+            $array['roles'] = $this->getRoleNames()->toArray();
+        }
+        
+        if (!in_array('permissions', $this->hidden)) {
+            $array['permissions'] = $this->getAllPermissions()->pluck('name')->toArray();
+        }
+        
+        return $array;
     }
 }
