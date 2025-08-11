@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Data\UserData;
+use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 
 class CreateUserService
@@ -11,8 +12,8 @@ class CreateUserService
         private UserRepositoryInterface $userRepository,
     ) {}
 
-    public function handle(UserData $userData): void
+    public function handle(UserData $userData): User
     {
-        $this->userRepository->create($userData);
+        return $this->userRepository->create($userData);
     }
 }
