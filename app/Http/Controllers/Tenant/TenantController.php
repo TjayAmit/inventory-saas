@@ -7,6 +7,7 @@ use App\Http\Requests\TenantRequest;
 use App\Services\Tenant\CreateTenantService;
 use App\Services\Tenant\DeleteTenantService;
 use App\Services\Tenant\UpdateTenantService;
+use Inertia\Inertia;
 use App\Data\TenantData;
 
 class TenantController extends Controller
@@ -24,7 +25,7 @@ class TenantController extends Controller
     public function index()
     {
         $tenants = Tenant::all();
-        return view('tenant.index', compact('tenants'));
+        return Inertia::render('Tenant/Index', compact('tenants'));
     }
 
     /**
@@ -32,7 +33,7 @@ class TenantController extends Controller
      */
     public function create()
     {
-        return view('tenant.create');
+        return Inertia::render('Tenant/Create');
     }
 
     /**
@@ -52,7 +53,7 @@ class TenantController extends Controller
      */
     public function show(Tenant $tenant)
     {
-        return view('tenant.show', compact('tenant'));
+        return Inertia::render('Tenant/Show', compact('tenant'));
     }
 
     /**
@@ -60,7 +61,7 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        return view('tenant.edit', compact('tenant'));
+        return Inertia::render('Tenant/Edit', compact('tenant'));
     }
 
     /**
