@@ -3,8 +3,11 @@
 namespace App\Data;
 
 use Illuminate\Http\Request;
+use Spatie\LaravelData\Data;
 
-class TenantData
+
+
+class TenantData extends Data
 {
     public function __construct(
         public string $name,
@@ -22,7 +25,7 @@ class TenantData
         );
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'name' => $this->name,
