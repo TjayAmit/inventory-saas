@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tenant;
-use Illuminate\Http\Request;
+use App\Http\Requests\TenantRequest;
+use App\Services\Tenant\CreateTenantService;
+use App\Services\Tenant\UpdateTenantService;
+use App\Data\TenantData;
 
 class TenantController extends Controller
 {
+    public function __construct(
+        private CreateTenantService $createTenantService,
+        private UpdateTenantService $updateTenantService,
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $tenants = Tenant::all();
+        return view('tenant.index', compact('tenants'));
     }
 
     /**
@@ -20,15 +30,19 @@ class TenantController extends Controller
      */
     public function create()
     {
-        //
+        return view('tenant.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TenantRequest $request)
     {
-        //
+        $data = TenantData::fromRequest($request);
+
+        $tenant = $this->createTenantService->handle($data);
+
+        return redirect()->route('tenant.index')->with('success', 'Tenant created successfully');
     }
 
     /**
@@ -36,7 +50,7 @@ class TenantController extends Controller
      */
     public function show(Tenant $tenant)
     {
-        //
+        return view('tenant.show', compact('tenant'));
     }
 
     /**
@@ -44,15 +58,19 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        //
+        return view('tenant.edit', compact('tenant'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tenant $tenant)
+    public function update(TenantRequest $request, Tenant $tenant)
     {
-        //
+        $data = TenantData::fromRequest($request);
+
+        $tenant = $this->updateTenantService->handle($tenant, $data);
+
+        return redirect()->route('tenant.index')->with('success', 'Tenant updated successfully');
     }
 
     /**
@@ -60,6 +78,8 @@ class TenantController extends Controller
      */
     public function destroy(Tenant $tenant)
     {
-        //
+        $tenant->delete();
+
+        return redirect()->route('tenant.index')->with('success', 'Tenant deleted successfully');
     }
 }

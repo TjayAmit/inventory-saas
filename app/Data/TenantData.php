@@ -2,7 +2,7 @@
 
 namespace App\Data;
 
-use App\Models\Tenant;
+use Illuminate\Http\Request;
 
 class TenantData
 {
@@ -13,12 +13,12 @@ class TenantData
     ) {
     }
 
-    public static function fromTenant(Tenant $tenant): self
+    public static function fromRequest(Request $request): self
     {
         return new self(
-            name: $tenant->name,
-            slug: $tenant->slug,
-            is_active: $tenant->is_active,
+            name: $request->name,
+            slug: $request->slug,
+            is_active: $request->is_active,
         );
     }
 

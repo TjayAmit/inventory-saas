@@ -6,14 +6,14 @@ use App\Data\TenantData;
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Models\Tenant;
 
-class CreateTenantService
+class UpdateTenantService
 {
     public function __construct(
         private TenantRepositoryInterface $tenantRepository,
     ) {
     }
-    public function handle(TenantData $data): Tenant
+    public function handle(Tenant $tenant, TenantData $data): Tenant
     {
-        return $this->tenantRepository->create($data);
+        return $this->tenantRepository->update($tenant, $data);
     }
 }
