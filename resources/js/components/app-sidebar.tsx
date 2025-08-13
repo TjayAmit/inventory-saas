@@ -3,8 +3,9 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User } from 'lucide-react';
+import { SharedData } from '@/types';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -12,11 +13,19 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+        role: 'Tenant Admin',
     },
     {
-        title: 'Users',
+        title: 'Dashboard',
+        href: '/admin/dashboard',
+        icon: LayoutGrid,
+        role: 'Super Admin',
+    },
+    {
+        title: 'Users', 
         href: '/admin/users',
-        icon: User,
+        icon: User, 
+        role: 'Super Admin',
     },
 ];
 
@@ -34,6 +43,8 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -49,7 +60,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems.filter(item => auth.user?.roles?.includes(item.role!))} />
             </SidebarContent>
 
             <SidebarFooter>

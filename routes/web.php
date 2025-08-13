@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Tenant\User\CreateUserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,6 +21,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 
     Route::get('users', [UserController::class, 'index'])->name('admin.users');
+
+    Route::get('users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('users', [CreateUserController::class, 'store']);
 });
 
 require __DIR__.'/settings.php';

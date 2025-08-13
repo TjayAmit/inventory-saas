@@ -20,6 +20,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    role?: string;
 }
 
 export interface SharedData {
@@ -37,6 +38,7 @@ export interface User {
     email: string;
     avatar?: string;
     email_verified_at: string | null;
+    roles: string[];
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...

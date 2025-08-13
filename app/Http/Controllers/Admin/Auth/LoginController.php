@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Admin;
 use Inertia\Inertia;
 
 class LoginController extends Controller
@@ -38,7 +39,7 @@ class LoginController extends Controller
             ]);
         }
 
-        if (auth()->guard('admin')->attempt($request->only('email', 'password'), $request->filled('remember'))) {
+        if (Auth::guard('admin')->attempt($request->only('email', 'password'), $request->filled('remember'))) {
             $request->session()->regenerate();
 
             \Log::info('Admin logged in successfully');
@@ -57,7 +58,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        auth()->guard('admin')->logout();
+        Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
