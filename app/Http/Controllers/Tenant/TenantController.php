@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tenant;
 use App\Http\Requests\TenantRequest;
 use App\Services\Tenant\CreateTenantService;
+use App\Services\Tenant\DeleteTenantService;
 use App\Services\Tenant\UpdateTenantService;
 use App\Data\TenantData;
 
@@ -13,6 +14,7 @@ class TenantController extends Controller
     public function __construct(
         private CreateTenantService $createTenantService,
         private UpdateTenantService $updateTenantService,
+        private DeleteTenantService $deleteTenantService,
     ) {
     }
 
@@ -78,7 +80,7 @@ class TenantController extends Controller
      */
     public function destroy(Tenant $tenant)
     {
-        $tenant->delete();
+        $this->deleteTenantService->handle($tenant);
 
         return redirect()->route('tenant.index')->with('success', 'Tenant deleted successfully');
     }
