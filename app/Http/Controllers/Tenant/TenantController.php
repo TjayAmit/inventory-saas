@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\TenantData;
+use App\Exceptions\TenantExistException;
+use App\Http\Requests\Tenant\TenantRequest;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 
@@ -40,9 +43,21 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TenantRequest $request)
     {
-        //
+        $tenantData = TenantData::fromRequest($request);
+
+        try{
+            $tenant = $this->createTenantService->handle(auth()->user(), $tenantData);
+    
+            return redirect()
+                ->route('tenant.index')
+                ->with('success', 'Tenant created successfully');
+        }catch(TenantExistException $e){
+            return back()
+                ->withInput()
+                ->withErrors(['tenant' => $e->getMessage()]);
+        }
     }
 
     /**

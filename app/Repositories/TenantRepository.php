@@ -21,4 +21,11 @@ class TenantRepository implements TenantRepositoryInterface
     {
         return Tenant::create($tenantData->toArray());
     }
+
+    public function findByOwnerAndName(User $user, string $name): ?Tenant
+    {
+        return Tenant::where('user_id', $user->id)
+            ->where('name', $name)
+            ->first();
+    }
 }

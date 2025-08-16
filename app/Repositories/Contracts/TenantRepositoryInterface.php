@@ -13,4 +13,6 @@ interface TenantRepositoryInterface
 {
     public function index(User $user,Request $request): LengthAwarePaginator;
     public function create(TenantData $tenantData): Tenant;
+
+    public function findByOwnerAndName(User $user, string $name): ?Tenant;
 }
