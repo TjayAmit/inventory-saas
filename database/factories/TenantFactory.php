@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tenant>
@@ -19,7 +20,14 @@ class TenantFactory extends Factory
         return [
             'name' => fake()->name(),
             'slug' => fake()->slug(),
+            'logo' => fake()->imageUrl(),
+            'favicon' => fake()->imageUrl(),
+            'timezone' => fake()->timezone(),
+            'currency' => fake()->currencyCode(),
+            'language' => fake()->languageCode(),
             'is_active' => fake()->boolean(),
+            'user_id' => User::factory(),
+            'is_active' => fake()->boolean()
         ];
     }
 }

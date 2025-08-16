@@ -1,31 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Tenant;
 
-use App\Models\Tenant;
-use App\Http\Requests\TenantRequest;
-use App\Services\Tenant\CreateTenantService;
-use App\Services\Tenant\DeleteTenantService;
-use App\Services\Tenant\UpdateTenantService;
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use App\Data\TenantData;
+use App\Exceptions\TenantExistException;
+use App\Http\Requests\Tenant\TenantRequest;
+use App\Models\Tenant;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+use App\Services\Tenant\CreateTenantService;
+use App\Repositories\Contracts\TenantRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use Inertia\Inertia;
 
 class TenantController extends Controller
 {
     public function __construct(
-        private CreateTenantService $createTenantService,
-        private UpdateTenantService $updateTenantService,
-        private DeleteTenantService $deleteTenantService,
+        private UserRepositoryInterface $userRepository,
+        protected TenantRepositoryInterface $tenantRepository,
+        protected CreateTenantService $createTenantService,
     ) {
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tenants = Tenant::all();
-        return Inertia::render('Tenant/Index', compact('tenants'));
+        $tenants = $this->tenantRepository->index($request);
+
+        return Inertia::render('admin/tenants/index', [
+            'tenants' => $tenants,
+        ]);
     }
 
     /**
@@ -33,19 +41,31 @@ class TenantController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Tenant/Create');
+        $users = $this->userRepository->list();
+
+        return Inertia::render('admin/tenants/create', [
+            'users' => $users,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TenantRequest $request)
+    public function store(User $user, TenantRequest $request)
     {
-        $data = TenantData::fromRequest($request);
+        $tenantData = TenantData::fromRequest($request);
 
-        $tenant = $this->createTenantService->handle($data);
+        try{
+            $tenant = $this->createTenantService->handle($user, $tenantData);
 
-        return redirect()->route('tenant.index')->with('success', 'Tenant created successfully');
+            return redirect()
+                ->route('admin.tenants.index')
+                ->with('success', 'Tenant created successfully');
+        }catch(TenantExistException $e){
+            return back()
+                ->withInput()
+                ->withErrors(['tenant' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -53,7 +73,7 @@ class TenantController extends Controller
      */
     public function show(Tenant $tenant)
     {
-        return Inertia::render('Tenant/Show', compact('tenant'));
+        //
     }
 
     /**
@@ -61,19 +81,15 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        return Inertia::render('Tenant/Edit', compact('tenant'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TenantRequest $request, Tenant $tenant)
+    public function update(Request $request, Tenant $tenant)
     {
-        $data = TenantData::fromRequest($request);
-
-        $tenant = $this->updateTenantService->handle($tenant, $data);
-
-        return redirect()->route('tenant.index')->with('success', 'Tenant updated successfully');
+        //
     }
 
     /**
@@ -81,8 +97,6 @@ class TenantController extends Controller
      */
     public function destroy(Tenant $tenant)
     {
-        $this->deleteTenantService->handle($tenant);
-
-        return redirect()->route('tenant.index')->with('success', 'Tenant deleted successfully');
+        //
     }
 }

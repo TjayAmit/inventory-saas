@@ -2,18 +2,33 @@
 
 namespace App\Services\Tenant;
 
-use App\Data\TenantData;
 use App\Repositories\Contracts\TenantRepositoryInterface;
+
+use App\Exceptions\TenantExistException;
+
+use App\Data\TenantData;
 use App\Models\Tenant;
+use App\Models\User;
 
 class CreateTenantService
 {
     public function __construct(
-        private TenantRepositoryInterface $tenantRepository,
+        protected TenantRepositoryInterface $tenantRepository,
     ) {
     }
-    public function handle(TenantData $data): Tenant
+
+    public function handle(User $user, TenantData $tenantData): Tenant
     {
-        return $this->tenantRepository->create($data);
+        $existingTenant = $this->tenantRepository->findByOwnerAndName($user, $tenantData->name);
+
+        if ($existingTenant) {
+            throw new TenantExistException();
+        }
+
+        $tenant = $this->tenantRepository->create($user, $tenantData);
+        $user->owner()->associate($tenant);
+        $user->save();
+
+        return $tenant;
     }
 }

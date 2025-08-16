@@ -2,44 +2,31 @@
 
 namespace App\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
+
 use App\Repositories\Contracts\TenantRepositoryInterface;
 use App\Data\TenantData;
 use App\Models\Tenant;
+use App\Models\User;
 
 class TenantRepository implements TenantRepositoryInterface
 {
-    public function create(TenantData $data): Tenant
+    public function index(Request $request): LengthAwarePaginator
     {
-        return Tenant::create([
-            'name' => $data->name,
-            'slug' => $data->slug,
-            'is_active' => $data->is_active,
-        ]);
+        return Tenant::with('owner')
+            ->paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
     }
 
-    public function findById(int $id): ?Tenant
+    public function create(User $user, TenantData $tenantData): Tenant
     {
-        return Tenant::find($id);
+        return Tenant::create($tenantData->toArray() + ['owner' => $user->id]);
     }
 
-    public function findBySlug(string $slug): ?Tenant
+    public function findByOwnerAndName(User $user, string $name): ?Tenant
     {
-        return Tenant::where('slug', $slug)->first();
-    }
-
-    public function update(Tenant $tenant, TenantData $data): Tenant
-    {
-        $tenant->update([
-            'name' => $data->name,
-            'slug' => $data->slug,
-            'is_active' => $data->is_active,
-        ]);
-
-        return $tenant;
-    }
-
-    public function delete(Tenant $tenant): bool
-    {
-        return $tenant->delete();
+        return Tenant::where('user_id', $user->id)
+            ->where('name', $name)
+            ->first();
     }
 }

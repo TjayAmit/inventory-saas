@@ -5,14 +5,16 @@ namespace App\Data;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\Data;
 
-
-
 class TenantData extends Data
 {
     public function __construct(
         public string $name,
         public string $slug,
-        public bool $is_active,
+        public string $logo,
+        public string $favicon,
+        public string $timezone,
+        public string $currency,
+        public string $language,
     ) {
     }
 
@@ -21,6 +23,11 @@ class TenantData extends Data
         return new self(
             name: $request->name,
             slug: $request->slug,
+            logo: $request->logo,
+            favicon: $request->favicon,
+            timezone: $request->timezone,
+            currency: $request->currency,
+            language: $request->language,
             is_active: $request->is_active,
         );
     }
@@ -28,8 +35,13 @@ class TenantData extends Data
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
+            'name' => $this->name,  
             'slug' => $this->slug,
+            'logo' => $this->logo,
+            'favicon' => $this->favicon,
+            'timezone' => $this->timezone,
+            'currency' => $this->currency,
+            'language' => $this->language,
             'is_active' => $this->is_active,
         ];
     }

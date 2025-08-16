@@ -2,15 +2,17 @@
 
 namespace App\Repositories\Contracts;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
+
 use App\Data\TenantData;
 use App\Models\Tenant;
+use App\Models\User;
 
 interface TenantRepositoryInterface
 {
-    public function create(TenantData $data): Tenant;
+    public function index(Request $request): LengthAwarePaginator;
+    public function create(User $user, TenantData $tenantData): Tenant;
 
-    public function findById(int $id): ?Tenant;
-    public function findBySlug(string $slug): ?Tenant;
-    public function update(Tenant $tenant, TenantData $data): Tenant;
-    public function delete(Tenant $tenant): bool;
+    public function findByOwnerAndName(User $user, string $name): ?Tenant;
 }

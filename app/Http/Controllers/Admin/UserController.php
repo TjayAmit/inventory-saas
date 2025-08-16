@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index()
+    public function __construct(
+        protected UserRepositoryInterface $userRepository,
+    ) {
+    }
+
+    public function index(Request $request)
     {
-        $users = User::paginate(page: 1, perPage: 10);
+        $users = $this->userRepository->index($request);
 
         return Inertia::render('admin/users/index', [
             'users' => $users,
