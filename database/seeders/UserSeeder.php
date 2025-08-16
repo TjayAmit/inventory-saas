@@ -18,6 +18,8 @@ class UserSeeder extends Seeder
             'name' => 'Tenant',
             'email' => 'tenant@mailinator.com',
             'password' => 'password',
+            'email_verified_at' => now(),
+
         ]);
 
         $user->assignRole('Tenant Admin');

@@ -12,10 +12,9 @@ use App\Models\User;
 
 class TenantRepository implements TenantRepositoryInterface
 {
-    public function index(User $user,Request $request): LengthAwarePaginator
+    public function index(Request $request): LengthAwarePaginator
     {
-        return Tenant::where('user_id', $user->id)
-            ->paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
+        return Tenant::paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
     }
     public function create(TenantData $tenantData): Tenant
     {

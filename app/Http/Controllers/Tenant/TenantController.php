@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Tenant;
 
+use App\Http\Controllers\Controller;
 use App\Data\TenantData;
 use App\Exceptions\TenantExistException;
 use App\Http\Requests\Tenant\TenantRequest;
@@ -25,9 +26,9 @@ class TenantController extends Controller
      */
     public function index(Request $request)
     {
-        $tenants = $this->tenantRepository->index(auth()->user(),$request);
+        $tenants = $this->tenantRepository->index($request);
 
-        return Inertia::render('Tenant/Index', [
+        return Inertia::render('admin/tenants/index', [
             'tenants' => $tenants,
         ]);
     }
