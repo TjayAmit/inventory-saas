@@ -22,6 +22,7 @@ class Tenant extends Model
         'language',
         'is_active',
         'user_id',
+        'is_active',
     ];
 
     protected $casts = [
@@ -46,5 +47,10 @@ class Tenant extends Model
         static::creating(function ($tenant) {
             $tenant->slug = Str::slug($tenant->name);
         });
+    ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }

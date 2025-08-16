@@ -15,7 +15,6 @@ class TenantData extends Data
         public string $timezone,
         public string $currency,
         public string $language,
-        public bool $is_active,
     ) {
     }
 

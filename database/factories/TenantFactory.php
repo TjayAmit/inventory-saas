@@ -20,7 +20,6 @@ class TenantFactory extends Factory
         return [
             'name' => fake()->name(),
             'slug' => fake()->slug(),
-            'domain' => fake()->domainName(),
             'logo' => fake()->imageUrl(),
             'favicon' => fake()->imageUrl(),
             'timezone' => fake()->timezone(),
@@ -28,6 +27,7 @@ class TenantFactory extends Factory
             'language' => fake()->languageCode(),
             'is_active' => fake()->boolean(),
             'user_id' => User::factory(),
+            'is_active' => fake()->boolean()
         ];
     }
 }
