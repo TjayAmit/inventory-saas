@@ -10,7 +10,6 @@ class TenantData extends Data
     public function __construct(
         public string $name,
         public string $slug,
-        public string $domain,
         public string $logo,
         public string $favicon,
         public string $timezone,
@@ -25,7 +24,6 @@ class TenantData extends Data
         return new self(
             name: $request->name,
             slug: $request->slug,
-            domain: $request->domain,
             logo: $request->logo,
             favicon: $request->favicon,
             timezone: $request->timezone,
@@ -38,9 +36,8 @@ class TenantData extends Data
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
+            'name' => $this->name,  
             'slug' => $this->slug,
-            'domain' => $this->domain,
             'logo' => $this->logo,
             'favicon' => $this->favicon,
             'timezone' => $this->timezone,

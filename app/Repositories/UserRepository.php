@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Data\UserData;
@@ -14,6 +15,11 @@ class UserRepository implements UserRepositoryInterface
     public function index(Request $request):LengthAwarePaginator
     {
         return User::paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
+    }
+
+    public function list():Collection
+    {
+        return User::all();
     }
     
     public function create(UserData $userData): User

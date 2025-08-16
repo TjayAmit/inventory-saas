@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique()->index();
-            $table->string('domain')->unique()->index();
             $table->string('logo')->nullable();
             $table->string('favicon')->nullable();
             $table->string('timezone')->default('UTC');
@@ -26,7 +25,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['domain', 'is_active']);
+            $table->index(['name']);
         });
     }
 
@@ -37,7 +36,6 @@ return new class extends Migration
     {
         Schema::table('tenants', function (Blueprint $table) {
             $table->dropSoftDeletes();
-            $table->dropIndex(['domain', 'is_active']);
         });
 
         Schema::dropIfExists('tenants');

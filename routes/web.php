@@ -27,6 +27,15 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::post('users', [CreateUserController::class, 'store']);
 
     Route::get('tenants', [TenantController::class, 'index'])->name('admin.tenants');
+    Route::get('tenants/create', [TenantController::class, 'create'])->name('admin.tenants.create');
+    Route::post('tenants', [TenantController::class, 'store']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    // Example tenant access
+    // Route::prefix('/{tenant}')->group(function () {
+    //     Route::get('/', [TenantController::class, 'show'])->name('tenant.show');
+    // });
 });
 
 require __DIR__.'/settings.php';

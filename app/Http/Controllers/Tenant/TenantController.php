@@ -7,6 +7,7 @@ use App\Data\TenantData;
 use App\Exceptions\TenantExistException;
 use App\Http\Requests\Tenant\TenantRequest;
 use App\Models\Tenant;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
 use App\Services\Tenant\CreateTenantService;
@@ -16,6 +17,7 @@ use Inertia\Inertia;
 class TenantController extends Controller
 {
     public function __construct(
+        private UserRepositoryInterface $userRepository,
         protected TenantRepositoryInterface $tenantRepository,
         protected CreateTenantService $createTenantService,
     ) {
@@ -38,7 +40,11 @@ class TenantController extends Controller
      */
     public function create()
     {
-        //
+        $users = $this->userRepository->list();
+
+        return Inertia::render('admin/tenants/create', [
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -50,7 +56,7 @@ class TenantController extends Controller
 
         try{
             $tenant = $this->createTenantService->handle(auth()->user(), $tenantData);
-    
+
             return redirect()
                 ->route('tenant.index')
                 ->with('success', 'Tenant created successfully');

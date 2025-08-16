@@ -15,7 +15,6 @@ class Tenant extends Model
     protected $fillable = [
         'name',
         'slug',
-        'domain',
         'logo',
         'favicon',
         'timezone',
@@ -38,5 +37,14 @@ class Tenant extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($tenant) {
+            $tenant->slug = Str::slug($tenant->name);
+        });
     }
 }

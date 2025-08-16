@@ -16,6 +16,7 @@ class TenantRepository implements TenantRepositoryInterface
     {
         return Tenant::paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
     }
+
     public function create(TenantData $tenantData): Tenant
     {
         return Tenant::create($tenantData->toArray());

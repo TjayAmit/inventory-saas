@@ -11,7 +11,7 @@ class TenantRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class TenantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'logo' => 'required|string|max:255',
+            'favicon' => 'required|string|max:255',
+            'timezone' => 'required|string|max:255',
+            'currency' => 'required|string|max:255',
+            'language' => 'required|string|max:255',
+            'is_active' => 'required|boolean',
         ];
     }
 }
