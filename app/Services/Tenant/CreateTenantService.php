@@ -25,7 +25,7 @@ class CreateTenantService
             throw new TenantExistException();
         }
 
-        $tenant = $this->tenantRepository->create($tenantData);
+        $tenant = $this->tenantRepository->create($user, $tenantData);
         $user->owner()->associate($tenant);
         $user->save();
 

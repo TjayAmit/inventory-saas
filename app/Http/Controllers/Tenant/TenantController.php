@@ -7,11 +7,12 @@ use App\Data\TenantData;
 use App\Exceptions\TenantExistException;
 use App\Http\Requests\Tenant\TenantRequest;
 use App\Models\Tenant;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\Services\Tenant\CreateTenantService;
 use App\Repositories\Contracts\TenantRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Inertia\Inertia;
 
 class TenantController extends Controller
@@ -50,15 +51,15 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TenantRequest $request)
+    public function store(User $user, TenantRequest $request)
     {
         $tenantData = TenantData::fromRequest($request);
 
         try{
-            $tenant = $this->createTenantService->handle(auth()->user(), $tenantData);
+            $tenant = $this->createTenantService->handle($user, $tenantData);
 
             return redirect()
-                ->route('tenant.index')
+                ->route('admin.tenants.index')
                 ->with('success', 'Tenant created successfully');
         }catch(TenantExistException $e){
             return back()

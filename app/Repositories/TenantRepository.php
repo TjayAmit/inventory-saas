@@ -14,12 +14,13 @@ class TenantRepository implements TenantRepositoryInterface
 {
     public function index(Request $request): LengthAwarePaginator
     {
-        return Tenant::paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
+        return Tenant::with('owner')
+            ->paginate(page: $request->query('page', 1), perPage: $request->query('per_page', 10));
     }
 
-    public function create(TenantData $tenantData): Tenant
+    public function create(User $user, TenantData $tenantData): Tenant
     {
-        return Tenant::create($tenantData->toArray());
+        return Tenant::create($tenantData->toArray() + ['owner' => $user->id]);
     }
 
     public function findByOwnerAndName(User $user, string $name): ?Tenant

@@ -12,7 +12,7 @@ use App\Models\User;
 interface TenantRepositoryInterface
 {
     public function index(Request $request): LengthAwarePaginator;
-    public function create(TenantData $tenantData): Tenant;
+    public function create(User $user, TenantData $tenantData): Tenant;
 
     public function findByOwnerAndName(User $user, string $name): ?Tenant;
 }

@@ -52,7 +52,7 @@ export default function CreateTenant({ users }: Props) {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    post('/admin/tenants')
+    post(`/admin/tenants/${data.user_id}`)
   }
 
   const handleActiveChange = (checked: boolean) => {

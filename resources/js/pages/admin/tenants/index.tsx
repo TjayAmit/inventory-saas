@@ -24,7 +24,21 @@ interface Tenant {
   id: number
   name: string
   slug: string
-  domain: string
+  logo: string,
+  favicon: string,
+  timezone: string,
+  currency: string,
+  language: string,
+  is_active: boolean,
+  user_id: number,
+  owner: {
+    id: number,
+    name: string,
+    email: string,
+    role: string,
+    created_at: string,
+    updated_at: string,
+  },
   created_at: string
 }
 
@@ -58,7 +72,11 @@ export default function Tenants({ tenants }: Props) {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Slug</TableHead>
-                  <TableHead>Domain</TableHead>
+                  <TableHead>Logo</TableHead>
+                  <TableHead>Favicon</TableHead>
+                  <TableHead>Timezone</TableHead>
+                  <TableHead>Owner</TableHead>
+                  <TableHead>Email</TableHead>
                   <TableHead>Joined</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -68,7 +86,11 @@ export default function Tenants({ tenants }: Props) {
                   <TableRow key={tenant.id}>
                     <TableCell className="font-medium">{tenant.name}</TableCell>
                     <TableCell>{tenant.slug}</TableCell>
-                    <TableCell>{tenant.domain}</TableCell>
+                    <TableCell>{tenant.logo}</TableCell>
+                    <TableCell>{tenant.favicon}</TableCell>
+                    <TableCell>{tenant.timezone}</TableCell>
+                    <TableCell>{tenant.owner.name}</TableCell>
+                    <TableCell>{tenant.owner.email}</TableCell>
                     <TableCell>{tenant.created_at}</TableCell>
                     <TableCell className="text-right space-x-2">
                       <Button variant="outline" size="sm" asChild>
