@@ -13,11 +13,19 @@ return new class extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->index();
+            $table->string('logo')->nullable();
+            $table->string('favicon')->nullable();
+            $table->string('timezone')->default('UTC');
+            $table->string('currency')->default('USD');
+            $table->string('language')->default('en');
             $table->boolean('is_active')->default(false);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
+
+            $table->index(['name']);
         });
     }
 
@@ -26,6 +34,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('tenants', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        
         Schema::dropIfExists('tenants');
     }
 };
