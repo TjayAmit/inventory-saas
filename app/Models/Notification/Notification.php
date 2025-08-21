@@ -20,13 +20,13 @@ class Notification extends Model
         "action_url",
     ];
 
-    public function users():HasMany
+    public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'user_notifications');
     }
 
-    public function admins():HasMany
+    public function admins()
     {
-        return $this->hasMany(Admin::class);
+        return $this->belongsToMany(Admin::class, 'admin_notifications');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Notification\AdminNotification;
+use App\Models\Notification\Notification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,7 +51,7 @@ class Admin extends Authenticatable
 
     public function notifications()
     {
-        return $this->hasMany(AdminNotification::class);
+        return $this->belongsToMany(Notification::class, 'admin_notifications', 'admin_id', 'notification_id');
     }
     
     public function toArray()

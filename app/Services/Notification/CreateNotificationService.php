@@ -2,18 +2,56 @@
 
 namespace App\Services\Notification;
 
-use App\Data\NotificationData;
-use App\Models\Notification;
+use App\Models\Notification\AdminNotification;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Notification\Notification;
 use App\Repositories\Contracts\NotificationRepositoryInterface;
+use App\Services\Notification\RetrieveTargetRecipients;
+use App\Data\NotificationDto;
+use App\Models\Admin;
 
 class CreateNotificationService
 {
     public function __construct(
         private NotificationRepositoryInterface $notificationRepository,
+        private RetrieveTargetRecipients $retrieveTargetRecipients,
     ) {}
 
-    public function handle(NotificationData $notificationData): Notification
+    public function handle(NotificationDto $notificationDto): Notification
     {
-        return $this->notificationRepository->create($notificationData);
+        return DB::transaction(function () use ($notificationDto) {
+            $notification = $this->notificationRepository->create($notificationDto);
+
+            $result = $this->createNotificationTargetRecipients($notification, $notificationDto);
+
+            if(!$result)
+            {
+                throw new \Exception('Failed to create notification target recipients');
+            }
+
+            return $notification;
+        });
+    }
+
+    protected function createNotificationTargetRecipients(Notification $notification, NotificationDto $notificationDto): bool
+    {
+        $targetRecipients = $this->retrieveTargetRecipients->handle($notificationDto->targetRecepientDto);
+
+        if($notificationDto->targetRecepientDto->getModel() instanceof Admin)
+        {
+            $notification->admins()->attach($targetRecipients->pluck('id')->toArray());
+
+            return true;
+        }
+
+        if($notificationDto->targetRecepientDto->getModel() instanceof User)
+        {
+            $notification->users()->attach($targetRecipients->pluck('id')->toArray());
+
+            return true;
+        }
+
+        return false;
     }
 }

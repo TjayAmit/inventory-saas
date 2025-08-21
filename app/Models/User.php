@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Notification\Notification;
 use App\Models\Notification\UserNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -73,7 +74,7 @@ class User extends Authenticatable
 
     public function notifications()
     {
-        return $this->hasMany(UserNotification::class);
+        return $this->belongsToMany(Notification::class, 'user_notifications', 'user_id', 'notification_id');
     }
     
     public function toArray()
