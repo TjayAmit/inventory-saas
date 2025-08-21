@@ -47,7 +47,7 @@ class Tenant extends Model
         static::creating(function ($tenant) {
             $tenant->slug = Str::slug($tenant->name);
         });
-    ];
+    }
 
     public function users()
     {
