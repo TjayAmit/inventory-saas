@@ -7,6 +7,8 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Http\Requests\UserRequest;
+
 class UserController extends Controller
 {
     public function __construct(
@@ -23,5 +25,9 @@ class UserController extends Controller
         ]);
     }
 
-
+    public function store(UserRequest $request)
+    {
+        
+        
+    }
 }

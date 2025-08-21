@@ -15,11 +15,12 @@ class UserSeeder extends Seeder
     {
         
         $user = User::create([
-            'name' => 'Tenant',
-            'email' => 'tenant@mailinator.com',
+            'last_name' => 'Doe',
+            'first_name' => 'John',
+            'email' => 'john@mailinator.com',
             'password' => 'password',
             'email_verified_at' => now(),
-
+            'address' => "Pasay, San Roque, Philippines"
         ]);
 
         $user->assignRole('Tenant Admin');
