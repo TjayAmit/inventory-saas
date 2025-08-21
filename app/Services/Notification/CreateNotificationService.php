@@ -35,15 +35,15 @@ class CreateNotificationService
 
     protected function createNotificationTargetRecipients(Notification $notification, NotificationDto $notificationDto): bool
     {
-        $targetRecipients = $this->retrieveTargetRecipients->handle($notificationDto->targetRecepientDto);
+        $targetRecipients = $this->retrieveTargetRecipients->handle($notificationDto->targetRecipientDto);
 
-        if ($notificationDto->targetRecepientDto->getModel() instanceof Admin) {
+        if ($notificationDto->targetRecipientDto->getModel() instanceof Admin) {
             $notification->admins()->attach($targetRecipients->pluck('id')->toArray());
 
             return true;
         }
 
-        if ($notificationDto->targetRecepientDto->getModel() instanceof User) {
+        if ($notificationDto->targetRecipientDto->getModel() instanceof User) {
             $notification->users()->attach($targetRecipients->pluck('id')->toArray());
 
             return true;

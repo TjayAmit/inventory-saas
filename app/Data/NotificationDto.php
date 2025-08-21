@@ -5,7 +5,7 @@ namespace App\Data;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\Dto;
 
-use App\Data\TargetRecepientDto;
+use App\Data\TargetRecipientDto;
 
 class NotificationDto extends Dto
 {
@@ -14,7 +14,7 @@ class NotificationDto extends Dto
         public string $message,
         public string $type,
         public string $action_url,
-        public TargetRecepientDto $targetRecepientDto,
+        public TargetRecipientDto $targetRecipientDto,
     ){}
 
     public function fromRequest(Request $request)
@@ -24,7 +24,7 @@ class NotificationDto extends Dto
             message: $request->message,
             type: $request->type,
             action_url: $request->action_url,
-            targetRecepientDto: $request->targetRecepientDto,
+            targetRecipientDto: $request->targetRecipientDto,
         );
     }
 
@@ -35,7 +35,7 @@ class NotificationDto extends Dto
             'message' => $this->message,
             'type' => $this->type,
             'action_url' => $this->action_url,
-            'targetRecepientDto' => $this->targetRecepientDto,
+            'targetRecipientDto' => $this->targetRecipientDto,
         ];
     }
 }
