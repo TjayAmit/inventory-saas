@@ -10,6 +10,11 @@ use App\Models\Admin;
 
 class AdminRepository implements AdminRepositoryInterface
 {
+    public function findWithQuery(array $query): Collection
+    {
+        return Admin::where($query)->get();
+    }
+
     public function create(AdminDto $adminDto): Admin
     {
         return Admin::create($adminDto->toArray());

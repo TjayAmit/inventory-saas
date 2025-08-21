@@ -9,6 +9,7 @@ use App\Models\Admin;
 
 interface AdminRepositoryInterface
 {
+    public function findWithQuery(array $query): Collection;
     public function create(AdminDto $adminDto): Admin;
     public function update(Admin $admin, AdminDto $adminDto): Admin;
     public function revoke(Admin $admin): bool;
