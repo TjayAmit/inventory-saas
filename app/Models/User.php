@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Notification\UserNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -68,6 +69,11 @@ class User extends Authenticatable
         return $this->getAllPermissions()
             ->pluck('name')
             ->toArray(); // Ensure array conversion
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(UserNotification::class);
     }
     
     public function toArray()
