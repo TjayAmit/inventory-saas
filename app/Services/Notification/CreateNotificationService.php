@@ -2,7 +2,7 @@
 
 namespace App\Services\Notification;
 
-use App\Models\Notification\AdminNotification;
+use App\Exceptions\FailedToCreationRecipientNotification;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Notification\Notification;
@@ -25,9 +25,8 @@ class CreateNotificationService
 
             $result = $this->createNotificationTargetRecipients($notification, $notificationDto);
 
-            if(!$result)
-            {
-                throw new \Exception('Failed to create notification target recipients');
+            if (!$result) {
+                throw new FailedToCreationRecipientNotification();
             }
 
             return $notification;
@@ -38,15 +37,13 @@ class CreateNotificationService
     {
         $targetRecipients = $this->retrieveTargetRecipients->handle($notificationDto->targetRecepientDto);
 
-        if($notificationDto->targetRecepientDto->getModel() instanceof Admin)
-        {
+        if ($notificationDto->targetRecepientDto->getModel() instanceof Admin) {
             $notification->admins()->attach($targetRecipients->pluck('id')->toArray());
 
             return true;
         }
 
-        if($notificationDto->targetRecepientDto->getModel() instanceof User)
-        {
+        if ($notificationDto->targetRecepientDto->getModel() instanceof User) {
             $notification->users()->attach($targetRecipients->pluck('id')->toArray());
 
             return true;

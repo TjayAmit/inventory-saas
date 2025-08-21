@@ -37,11 +37,6 @@ class UserRepository implements UserRepositoryInterface
         return User::find($id);
     }
 
-    public function findWithQuery(array $query): Collection
-    {
-        return User::where($query)->get();
-    }
-
     public function update(User $user, UserData $userData): User
     {
         $user->update($userData->toArray());
