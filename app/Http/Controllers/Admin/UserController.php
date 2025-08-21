@@ -7,7 +7,7 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\User\UserRequest;
 
 class UserController extends Controller
 {

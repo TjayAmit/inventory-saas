@@ -53,6 +53,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function name(): string
+    {
+        return $this->last_name.", ".$this->first_name;
+    }
+
     public function getRoleNamesAttribute(): array
     {
         return $this->getRoleNames()->toArray(); // Ensure array conversion
