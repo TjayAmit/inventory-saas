@@ -39,8 +39,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Create permissions for both guards
         foreach ($allPermissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
-            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'admin']);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // ==================== ADMIN GUARD ROLES ====================
@@ -48,20 +47,16 @@ class RoleAndPermissionSeeder extends Seeder
         // Super Admin - gets ALL admin permissions
         $superAdminRole = Role::firstOrCreate([
             'name' => 'Super Admin',
-            'guard_name' => 'admin'
         ]);
-        $superAdminRole->syncPermissions(Permission::where('guard_name', 'admin')->get());
-
-        // ==================== WEB GUARD ROLES ====================
+        
+        $superAdminRole->syncPermissions(Permission::all());
         
         // Tenant Admin - gets most permissions except sensitive system ones
         $tenantAdminRole = Role::firstOrCreate([
             'name' => 'Tenant Admin',
-            'guard_name' => 'web'
         ]);
         $tenantAdminRole->syncPermissions(
-            Permission::where('guard_name', 'web')
-                ->whereNotIn('name', [
+            Permission::whereNotIn('name', [
                     'create roles', 'edit roles', 'delete roles',
                     'create permissions', 'edit permissions', 'delete permissions',
                     'manage tenant users'
@@ -72,11 +67,9 @@ class RoleAndPermissionSeeder extends Seeder
         // Inventory Manager
         $inventoryManager = Role::firstOrCreate([
             'name' => 'Inventory Manager', 
-            'guard_name' => 'web'
         ]);
         $inventoryManager->syncPermissions(
-            Permission::where('guard_name', 'web')
-                ->whereIn('name', [
+            Permission::whereIn('name', [
                     'view products', 'create products', 'edit products',
                     'adjust stock', 'view stock history', 'manage warehouses',
                     'view purchases', 'create purchases', 'receive purchases',
@@ -87,11 +80,9 @@ class RoleAndPermissionSeeder extends Seeder
         // Sales Manager
         $salesManager = Role::firstOrCreate([
             'name' => 'Sales Manager',
-            'guard_name' => 'web'
         ]);
         $salesManager->syncPermissions(
-            Permission::where('guard_name', 'web')
-                ->whereIn('name', [
+            Permission::whereIn('name', [
                     'view products', 'view sales', 'create sales', 'cancel sales',
                     'process refunds', 'manage customers', 'view reports',
                 ])
@@ -101,11 +92,9 @@ class RoleAndPermissionSeeder extends Seeder
         // Cashier
         $cashier = Role::firstOrCreate([
             'name' => 'Cashier',
-            'guard_name' => 'web'
         ]);
         $cashier->syncPermissions(
-            Permission::where('guard_name', 'web')
-                ->whereIn('name', [
+            Permission::whereIn('name', [
                     'view products', 'view sales', 'create sales',
                 ])
                 ->get()
@@ -114,11 +103,9 @@ class RoleAndPermissionSeeder extends Seeder
         // Viewer (Read-only)
         $viewer = Role::firstOrCreate([
             'name' => 'Viewer',
-            'guard_name' => 'web'
         ]);
         $viewer->syncPermissions(
-            Permission::where('guard_name', 'web')
-                ->whereIn('name', [
+            Permission::whereIn('name', [
                     'view products', 'view sales', 'view reports',
                 ])
                 ->get()

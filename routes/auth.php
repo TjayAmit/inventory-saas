@@ -35,12 +35,6 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/login', [AdminLoginController::class, 'form'])->name('admin.login');
-    Route::post('/login.post', [AdminLoginController::class, 'login'])->name('admin.login.post');
-    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-});
-
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
