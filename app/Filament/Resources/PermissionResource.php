@@ -19,11 +19,14 @@ class PermissionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'System Management';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('guard_name')->required()->default('web'),
             ]);
     }
 
@@ -31,10 +34,10 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')->searchable(),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

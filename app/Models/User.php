@@ -20,14 +20,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'image',
         'last_name',
         'first_name',
         'middle_name',
         'ext_name',
-        'name', 
         'email',
         'password',
-        'address'
+        'address',
+        'status'
     ];
 
     /**
@@ -56,6 +57,11 @@ class User extends Authenticatable
     public function name(): string
     {
         return $this->last_name.", ".$this->first_name;
+    }
+
+    public function getNameAttribute(): string
+    {
+        return $this->first_name." ".$this->last_name;
     }
 
     public function getRoleNamesAttribute(): array

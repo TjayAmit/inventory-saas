@@ -18,6 +18,9 @@ class WarehouseResource extends Resource
     protected static ?string $model = Warehouse::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    
+    protected static ?string $navigationGroup = 'Tenant Management';
+
 
     public static function form(Form $form): Form
     {

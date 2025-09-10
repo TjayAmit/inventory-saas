@@ -13,9 +13,9 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $admin = User::create([
+            'image' => 'https://media.licdn.com/dms/image/v2/D5635AQGE_a0VLHkluA/profile-framedphoto-shrink_200_200/B56ZgL5m_mG0Ac-/0/1752546308431?e=1758117600&v=beta&t=RxwnQ4jAEk-Vv1_mZxTQMNF0aVF-jxCtpDO9CynYouI',
             'last_name' => "Amit",
             'first_name' => "Tristan",
-            'name' => "Tristan Amit",
             'email' => 'tristan.zcmc@gmail.com',
             'password' => 'password',
             'email_verified_at' => now(),
@@ -27,7 +27,6 @@ class UserSeeder extends Seeder
         $user = User::create([
             'last_name' => 'Doe',
             'first_name' => 'John',
-            'name' => "John Doe",
             'email' => 'john@mailinator.com',   
             'password' => 'password',
             'email_verified_at' => now(),
