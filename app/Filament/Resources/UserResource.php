@@ -41,6 +41,12 @@ class UserResource extends Resource
                     ])
                     ->required(),
                 Forms\Components\TextInput::make('address'),
+                Forms\Components\Select::make('roles')
+                    ->label('Roles')
+                    ->relationship('roles', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->required(),
             ]);
     }
 
