@@ -27,6 +27,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\FileUpload::make('image')->image()->columnSpan(2),
                 Forms\Components\TextInput::make('last_name')->required()->reactive(),
                 Forms\Components\TextInput::make('first_name')->required()->reactive(),
                 Forms\Components\TextInput::make('middle_name'),
@@ -48,11 +49,12 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')->label('Image')->circular(),
+                Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('first_name')->searchable()->default('N/A'),
                 Tables\Columns\TextColumn::make('middle_name')->searchable()->default('N/A'),
                 Tables\Columns\TextColumn::make('last_name')->searchable()->default('N/A'),
                 Tables\Columns\TextColumn::make('ext_name')->searchable()->default('N/A'),
-                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\CheckboxColumn::make('email_verified_at')->label('Verified'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -97,10 +99,5 @@ class UserResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
-    }
-
-    public function panel(Panel $panel): Panel
-    {
-        return $panel->collapsibleNavigationGroups(false);
     }
 }
