@@ -2,55 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
+use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use Stancl\Tenancy\Contracts\TenantWithDatabase;
+use Stancl\Tenancy\Database\Concerns\HasDatabase;
+use Stancl\Tenancy\Database\Concerns\HasDomains;
 
-class Tenant extends Model
+class Tenant extends BaseTenant implements TenantWithDatabase
 {
-    /** @use HasFactory<\Database\Factories\TenantFactory> */
-    use HasFactory;
+    use HasDatabase, HasDomains;
 
     protected $fillable = [
-        'name',
-        'slug',
-        'logo',
-        'favicon',
-        'timezone',
-        'currency',
-        'language',
-        'is_active',
-        'user_id',
-        'is_active',
+        'tenant_id',
     ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
-        'deleted_at' => 'datetime',
-    ];
-
-    public function getSlugAttribute($value): string
-    {
-        return Str::slug($value);
-    }
-
-    public function owner(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-    
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($tenant) {
-            $tenant->slug = Str::slug($tenant->name);
-        });
-    }
-
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 }

@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::bind('tenant', fn ($value) => Tenant::where('slug', $value)->firstOrFail());
+
     }
 }
